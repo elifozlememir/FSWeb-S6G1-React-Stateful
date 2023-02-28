@@ -12,6 +12,7 @@ Yorumları takip edin.
 */
 
 import React from 'react';
+import { useState } from 'react';
 /* ADIM 0  */
 
 
@@ -27,23 +28,29 @@ export const enIyilerListesi = [
   { id: '6', isim: 'Carol Shaw' },
 ];
 
+
 export default function Programcilar() {
+
+  const [programcilar,setProgramcilar]= useState(enIyilerListesi);
+  const [programciId,setProgramciId]= useState(null);
   // İki state dilimine ihtiyacımız olduğundan, state hooku iki kez kullanmamız gerekecek..
   // Bir yanda programcılar listesi, diğer yanda öne çıkan programcının idsi.
 
 	
   const oneCikaninIsmi = () => {
+   
     // Bunu sona bırakın!
     // Bu bir event handler değil, yardımcıdır. Kullanımını JSX'te gözlemleyin.
     // Öne çıkan geliştiricinin _isim_ adını döndürmek için her iki state dilimini kullanacak.
     // Closureların güzelliği, argümanlar yoluyla bilgi enjekte etmeye gerek kalmadan programın 
 	// bu bölgesinden her iki state dilimini de "görebilmemiz"dir.
+  return programcilar.filter((item) => item.id === programciId)[0].isim;
   };
 
   const stil = {
     fontSize: '1.5em',
     marginTop: '0.5em',
-    color: 'royalblue', // 🤔 kutlarken renk gold'a dönecek
+    color: programciId === null ? 'royalblue' : 'gold', // 🤔 kutlarken renk gold'a dönecek
   };
 
   return (
@@ -57,7 +64,7 @@ export default function Programcilar() {
           " */
           enIyilerListesi.map(dev =>
             <div className='programmer' key={dev.id}>
-              {dev.isim} <button onClick={() => {/* burada dev.id 'yi öne çıkan id'ye atayın */ }}>Kutla</button>
+              {dev.isim} <button onClick={() => {setProgramciId(dev.id)/* burada dev.id 'yi öne çıkan id'ye atayın */ }}>Kutla</button>
             </div>
           )
         }
@@ -67,7 +74,7 @@ export default function Programcilar() {
           // Üçlüler, bir şeyin "gerçekliğine" bağlı olarak "bir şeyi veya diğerini" ifade etmek için harikadır..
           // Sözde-kod: öne çıkan true ise metin 1'i oluşturun, aksi takdirde metin 2'yi oluşturun..
           // Sabit kodlanmış false'u doğru değişkenle değiştirin.
-          false
+          programciId!==null
             ? `🎉 Hadi ${oneCikaninIsmi()}'ı kutlayalım! 🥳`
             : 'Harika bir programcı seçin'
         }
